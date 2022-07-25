@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import {useEffect, useState} from "react";
+import TodoTitles from "./components/TodoTitles";
+import TodoFooter from "./components/TodoFooter";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [data, setData] = useState([])
+    const [todos, setTodos] = useState([])
+
+    useEffect(() => {
+        fetch("https://jsonplaceholder.typicode.com/todos")
+            .then(response => response.json())
+            .then(results => {
+                setData(results.data)
+                let arr = results.slice(0, 10)
+                setTodos(arr)
+                console.log(arr)
+            })
+    }, [])
+
+    const handleSort = () => {
+        const sorted = todos.sort((a, b) => a.completed - b.completed)
+        setTodos(sorted)
+    }
+
+    return (
+        <div className="App">
+            <TodoTitles todos={todos}
+                        onDelete={(todo) => {
+                            setTodos(todos.filter((t) => t.id !== todo.id))
+                        }}/>
+
+            <TodoFooter
+                todos={todos}
+                onClearCompleted={() => {
+                    setTodos(todos.filter((item) => !item.completed))
+                }}/>
+
+            <button onClick={() => handleSort(todos)}>Sort</button>
+        </div>
+    );
 }
 
 export default App;
