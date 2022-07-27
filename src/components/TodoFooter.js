@@ -1,9 +1,8 @@
-const TodoFooter = ({todos, onClearCompleted}) => {
-    const completedSize = todos.filter((todo) => todo.completed).length
+const TodoFooter = ({todo, clearDoneTasks}) => {
+
     return (
         <>
-            <span> {completedSize}/{todos.length} Completed</span>
-            <button onClick={onClearCompleted}>Clear Completed</button>
+            <button onClick={clearDoneTasks} style={{background:"aqua"}}>Clear all done tasks</button>
         </>
 
     )

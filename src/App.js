@@ -1,44 +1,43 @@
-import {useEffect, useState} from "react";
 import TodoTitles from "./components/TodoTitles";
+import {useEffect, useState} from "react";
 import TodoFooter from "./components/TodoFooter";
+
 
 function App() {
 
-    const [data, setData] = useState([])
-    const [todos, setTodos] = useState([])
+    const [todo, setTodoList] = useState([])
 
     useEffect(() => {
         fetch("https://jsonplaceholder.typicode.com/todos")
             .then(response => response.json())
             .then(results => {
-                setData(results.data)
-                let arr = results.slice(0, 10)
-                setTodos(arr)
-                console.log(arr)
+                let arr = results.slice(0, 60)
+                setTodoList(arr)
             })
     }, [])
 
     const handleSort = () => {
-        const sorted = todos.sort((a, b) => a.completed - b.completed)
-        setTodos(sorted)
+        const sorted = todo.sort((a, b) => a.completed - b.completed)
+        setTodoList([...sorted])
     }
 
     return (
         <div className="App">
-            <TodoTitles todos={todos}
-                        onDelete={(todo) => {
-                            setTodos(todos.filter((t) => t.id !== todo.id))
+            <TodoTitles todo={todo}
+                        onDelete={(todos) => {
+                            setTodoList(todo.filter((t) => t.id !== todos.id))
                         }}/>
 
-            <TodoFooter
-                todos={todos}
-                onClearCompleted={() => {
-                    setTodos(todos.filter((item) => !item.completed))
-                }}/>
+            <TodoFooter todo={todo} clearDoneTasks={() => {
+                setTodoList(todo.filter((item) => !item.completed))
+            }}/>
 
-            <button onClick={() => handleSort(todos)}>Sort</button>
+
+            <button onClick={() => handleSort(todo)}>Sort</button>
+
         </div>
-    );
+    )
+
 }
 
 export default App;

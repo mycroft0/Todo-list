@@ -1,16 +1,19 @@
 import TodoRows from "./TodoRows";
+import "./ToDoStyle.css"
 
-const TodoTitles = ({todos,onDelete})=>{
+const TodoTitles = ({todo,onDelete})=>{
+
     return(
         <div>
-            {todos.map((item)=>{
+            {todo.map((item)=>{
                 return(
-                    <TodoRows key = {item.id} todo = {item} onDelete = {onDelete}
+                    <TodoRows  key = {item.id} todos = {item}  onDelete = {onDelete}
                     />
                 )
             })}
         </div>
     )
+
 }
 
 export default TodoTitles
